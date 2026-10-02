@@ -82,6 +82,7 @@ function InlineAmountInput({
         const next = Number(e.target.value);
         onChange(Number.isNaN(next) ? 0 : Math.max(next, 0));
       }}
+      onFocus={(e) => e.target.select()}
       className="h-auto w-28 bg-white/5 px-2 py-1 text-right text-sm font-medium text-white"
     />
   );
@@ -183,6 +184,7 @@ export default function Simulator() {
                 const next = Number(e.target.value);
                 setPurchaseAmount(Number.isNaN(next) ? 0 : Math.min(Math.max(next, 0), SLIDER_MAX));
               }}
+              onFocus={(e) => e.target.select()}
               className="h-auto w-32 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white"
             />
           </div>
