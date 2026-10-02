@@ -9,6 +9,8 @@ import { Slider } from "@/components/ui/slider";
 import {
   DEFAULT_BALANCE,
   DEFAULT_COMMITMENTS,
+  DEFAULT_DAYS_UNTIL_PAYDAY,
+  computeDailyBudget,
   computeRealMargin,
   computeRemainingAfterPurchase,
   computeSafetyBuffer,
@@ -106,11 +108,14 @@ export default function Simulator() {
   const [balance, setBalance] = useState(DEFAULT_BALANCE);
   const [commitments, setCommitments] = useState<Commitment[]>(DEFAULT_COMMITMENTS);
   const [purchaseAmount, setPurchaseAmount] = useState(DEFAULT_PURCHASE_AMOUNT);
+  const [daysUntilPayday, setDaysUntilPayday] = useState(DEFAULT_DAYS_UNTIL_PAYDAY);
   const [isCustomizing, setIsCustomizing] = useState(false);
 
   const realMargin = computeRealMargin(balance, commitments);
   const remaining = computeRemainingAfterPurchase(realMargin, purchaseAmount);
   const safetyBuffer = computeSafetyBuffer(realMargin);
+  const spendableAfterBuffer = remaining - safetyBuffer;
+  const dailyBudget = computeDailyBudget(spendableAfterBuffer, daysUntilPayday);
   const verdict = computeVerdict(remaining, realMargin);
   const { label, message, color, ring, track, thumb, icon: Icon } = VERDICT_CONFIG[verdict];
 
@@ -118,6 +123,7 @@ export default function Simulator() {
     setBalance(DEFAULT_BALANCE);
     setCommitments(DEFAULT_COMMITMENTS.map((c) => ({ ...c })));
     setPurchaseAmount(DEFAULT_PURCHASE_AMOUNT);
+    setDaysUntilPayday(DEFAULT_DAYS_UNTIL_PAYDAY);
     setIsCustomizing(false);
   };
 
@@ -267,6 +273,28 @@ export default function Simulator() {
             thumbClassName={`size-5 border-2 shadow-lg transition-[transform,border-color] duration-300 focus-visible:scale-125 ${thumb}`}
             aria-label="Montant de l'achat"
           />
+
+          <div className="mt-6 flex items-center justify-between gap-4 border-t border-white/5 pt-6">
+            <label htmlFor="days" className="text-sm font-medium text-white/70">
+              Jours avant ta prochaine paie
+            </label>
+            <Input
+              id="days"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={daysUntilPayday}
+              onChange={(e) => {
+                const next = Number.parseInt(e.target.value.replace(/\D/g, ""), 10);
+                setDaysUntilPayday(Number.isNaN(next) ? 0 : Math.max(next, 0));
+              }}
+              onFocus={(e) => e.target.select()}
+              className="h-10 w-20 bg-white/5 px-2 py-1 text-right text-base font-medium text-white md:text-sm"
+            />
+          </div>
+          <p className="mt-1.5 text-xs text-white/35">
+            Estimation simple (marge ÷ jours), pas la projection jour par jour de l&apos;app.
+          </p>
         </div>
 
         <motion.div
@@ -279,6 +307,13 @@ export default function Simulator() {
             {label}
           </p>
           <p className="mx-auto mt-3 max-w-sm text-sm text-white/50">{message}</p>
+          {daysUntilPayday > 0 && (
+            <p className="mt-3 border-t border-white/10 pt-3 text-xs text-white/40">
+              Soit environ{" "}
+              <span className="font-semibold text-white/70">{formatFCFA(dailyBudget)}/jour</span>{" "}
+              jusqu&apos;à ta prochaine paie, dans {daysUntilPayday} jours.
+            </p>
+          )}
         </motion.div>
       </div>
     </section>

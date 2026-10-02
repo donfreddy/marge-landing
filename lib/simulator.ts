@@ -73,6 +73,24 @@ export function computeVerdict(remaining: number, realMargin: number): Verdict {
   return "safe";
 }
 
+export const DEFAULT_DAYS_UNTIL_PAYDAY = 12;
+
+/**
+ * Budget indicatif par jour jusqu'à la prochaine paie, sur ce qu'il reste
+ * une fois la réserve de sécurité mise de côté.
+ *
+ * Simplification assumée, à ne pas confondre avec le moteur réel : l'app
+ * (DeterministicProjectionEngine) fait un vrai passage jour par jour sur la
+ * fenêtre [aujourd'hui, prochaine paie), en tenant compte des charges
+ * récurrentes et de leur niveau de confiance, pour trouver le creux le plus
+ * bas de la période. Cette démo n'a pas cette dimension : elle divise
+ * simplement un solde statique par un nombre de jours, en supposant une
+ * dépense parfaitement lissée.
+ */
+export function computeDailyBudget(spendableAfterBuffer: number, daysUntilPayday: number): number {
+  return daysUntilPayday > 0 ? spendableAfterBuffer / daysUntilPayday : spendableAfterBuffer;
+}
+
 export function formatFCFA(amount: number): string {
   const sign = amount < 0 ? "-" : "";
   const formatted = new Intl.NumberFormat("fr-FR").format(Math.abs(Math.round(amount)));

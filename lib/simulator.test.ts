@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   type Commitment,
+  computeDailyBudget,
   computeRealMargin,
   computeRemainingAfterPurchase,
   computeSafetyBuffer,
@@ -96,6 +97,20 @@ describe("computeVerdict", () => {
     // No purchase tested (0 out of 0): matches the real engine's policy, which
     // only turns red once marginBefore or marginAfter actually goes negative.
     expect(computeVerdict(0, 0)).toBe("safe");
+  });
+});
+
+describe("computeDailyBudget", () => {
+  it("divides the spendable amount by the days until payday", () => {
+    expect(computeDailyBudget(36_000, 12)).toBe(3_000);
+  });
+
+  it("can go negative when the spendable amount is already negative", () => {
+    expect(computeDailyBudget(-12_000, 12)).toBe(-1_000);
+  });
+
+  it("returns the spendable amount as-is when there are no days left", () => {
+    expect(computeDailyBudget(36_000, 0)).toBe(36_000);
   });
 });
 
