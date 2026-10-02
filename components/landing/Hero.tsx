@@ -20,7 +20,7 @@ const badges = [
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden px-4 pb-20 pt-32 sm:px-6 lg:pt-40">
+    <section id="top" className="relative overflow-hidden px-4 pb-20 pt-24 sm:px-6 lg:pt-40">
       <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
         <div className="text-center lg:text-left">
           <motion.h1
@@ -50,23 +50,31 @@ export default function Hero() {
             </Button>
           </motion.div>
 
-          <motion.div {...up(0.3)} className="mt-8 flex justify-center lg:justify-start">
-            <StoreBadges align="center" />
-          </motion.div>
+          <motion.p
+            {...up(0.28)}
+            className="mx-auto mt-6 max-w-sm text-sm font-semibold text-white/80 lg:mx-0"
+          >
+            Pas de synchronisation bancaire. Pas de compte à lier. Tes données restent sur ton
+            téléphone.
+          </motion.p>
 
           <motion.div
-            {...up(0.4)}
-            className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 lg:justify-start"
+            {...up(0.34)}
+            className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start"
           >
             {badges.map(({ icon: Icon, label }) => (
               <span
                 key={label}
-                className="flex items-center gap-1.5 text-xs font-medium text-white/40"
+                className="flex items-center gap-1.5 text-xs font-medium text-white/45"
               >
                 <Icon className="h-3.5 w-3.5" />
                 {label}
               </span>
             ))}
+          </motion.div>
+
+          <motion.div {...up(0.4)} className="mt-8 flex justify-center lg:justify-start">
+            <StoreBadges align="center" />
           </motion.div>
         </div>
 

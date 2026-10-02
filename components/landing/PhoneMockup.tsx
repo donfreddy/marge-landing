@@ -2,11 +2,15 @@
 
 import { motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
-import { formatFCFA } from "@/lib/simulator";
+import { computeRealMargin, computeRemainingAfterPurchase, formatFCFA } from "@/lib/simulator";
 
 const BALANCE = 180_000;
 const COMMITMENTS_TOTAL = 85_000;
-const REMAINING = 25_000;
+const PURCHASE_AMOUNT = 70_000;
+
+// Derived, not hardcoded, so this can never drift from the real calculation again.
+const REAL_MARGIN = computeRealMargin(BALANCE, [{ label: "Engagements", amount: COMMITMENTS_TOTAL }]);
+const REMAINING = computeRemainingAfterPurchase(REAL_MARGIN, PURCHASE_AMOUNT);
 
 export default function PhoneMockup() {
   return (
@@ -36,6 +40,14 @@ export default function PhoneMockup() {
             <div className="flex justify-between text-white/50">
               <span>Engagements</span>
               <span className="text-white/70">-{formatFCFA(COMMITMENTS_TOTAL)}</span>
+            </div>
+            <div className="flex justify-between border-t border-white/10 pt-1.5 font-semibold">
+              <span className="text-white">Marge réelle</span>
+              <span className="text-emerald-500">{formatFCFA(REAL_MARGIN)}</span>
+            </div>
+            <div className="flex justify-between text-white/50">
+              <span>Achat testé</span>
+              <span className="text-white/70">-{formatFCFA(PURCHASE_AMOUNT)}</span>
             </div>
           </div>
 

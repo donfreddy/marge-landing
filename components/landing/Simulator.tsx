@@ -20,6 +20,7 @@ import {
 const SLIDER_MAX = 150_000;
 const SLIDER_STEP = 1_000;
 const QUICK_AMOUNTS = [10_000, 25_000, 50_000, 100_000];
+const DEFAULT_PURCHASE_AMOUNT = 50_000;
 
 const VERDICT_CONFIG: Record<
   Verdict,
@@ -103,7 +104,8 @@ function AnimatedAmount({ value, className }: { value: number; className?: strin
 export default function Simulator() {
   const [balance, setBalance] = useState(DEFAULT_BALANCE);
   const [commitments, setCommitments] = useState<Commitment[]>(DEFAULT_COMMITMENTS);
-  const [purchaseAmount, setPurchaseAmount] = useState(0);
+  const [purchaseAmount, setPurchaseAmount] = useState(DEFAULT_PURCHASE_AMOUNT);
+  const [isCustomizing, setIsCustomizing] = useState(false);
 
   const realMargin = computeRealMargin(balance, commitments);
   const remaining = computeRemainingAfterPurchase(realMargin, purchaseAmount);
@@ -113,7 +115,8 @@ export default function Simulator() {
   const reset = () => {
     setBalance(DEFAULT_BALANCE);
     setCommitments(DEFAULT_COMMITMENTS.map((c) => ({ ...c })));
-    setPurchaseAmount(0);
+    setPurchaseAmount(DEFAULT_PURCHASE_AMOUNT);
+    setIsCustomizing(false);
   };
 
   const updateCommitmentAmount = (index: number, amount: number) => {
@@ -138,35 +141,63 @@ export default function Simulator() {
           </Button>
         </div>
 
-        <p className="mt-1 text-xs text-white/35">Modifie ton solde et tes charges pour voir ta vraie marge.</p>
+        {isCustomizing ? (
+          <>
+            <p className="mt-1 text-xs text-white/35">
+              Modifie ton solde et tes charges pour voir ta vraie marge.
+            </p>
 
-        <dl className="mt-6 divide-y divide-white/5 text-sm">
-          <div className="flex items-center justify-between py-2.5">
-            <dt className="text-white/50">Solde actuel</dt>
-            <dd>
-              <InlineAmountInput value={balance} onChange={setBalance} ariaLabel="Solde actuel" />
-            </dd>
-          </div>
-          {commitments.map((c, i) => (
-            <div key={c.label} className="flex items-center justify-between py-2.5">
-              <dt className="text-white/50">{c.label}</dt>
-              <dd className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="text-white/40">
-                  -
-                </span>
-                <InlineAmountInput
-                  value={c.amount}
-                  onChange={(next) => updateCommitmentAmount(i, next)}
-                  ariaLabel={c.label}
-                />
-              </dd>
+            <dl className="mt-6 divide-y divide-white/5 text-sm">
+              <div className="flex items-center justify-between py-2.5">
+                <dt className="text-white/50">Solde actuel</dt>
+                <dd>
+                  <InlineAmountInput value={balance} onChange={setBalance} ariaLabel="Solde actuel" />
+                </dd>
+              </div>
+              {commitments.map((c, i) => (
+                <div key={c.label} className="flex items-center justify-between py-2.5">
+                  <dt className="text-white/50">{c.label}</dt>
+                  <dd className="flex items-center gap-1.5">
+                    <span aria-hidden="true" className="text-white/40">
+                      -
+                    </span>
+                    <InlineAmountInput
+                      value={c.amount}
+                      onChange={(next) => updateCommitmentAmount(i, next)}
+                      ariaLabel={c.label}
+                    />
+                  </dd>
+                </div>
+              ))}
+              <div className="flex items-center justify-between py-3">
+                <dt className="font-semibold text-white">Marge réelle</dt>
+                <dd className="text-xl font-bold text-emerald-500">{formatFCFA(realMargin)}</dd>
+              </div>
+            </dl>
+
+            <button
+              type="button"
+              onClick={() => setIsCustomizing(false)}
+              className="mt-1 text-xs font-medium text-white/40 transition-colors hover:text-white hover:underline hover:underline-offset-2"
+            >
+              Replier
+            </button>
+          </>
+        ) : (
+          <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/3 px-5 py-4">
+            <div>
+              <p className="text-xs text-white/40">Marge réelle (solde − charges du mois)</p>
+              <p className="mt-1 text-2xl font-bold text-emerald-500">{formatFCFA(realMargin)}</p>
             </div>
-          ))}
-          <div className="flex items-center justify-between py-3">
-            <dt className="font-semibold text-white">Marge réelle</dt>
-            <dd className="text-xl font-bold text-emerald-500">{formatFCFA(realMargin)}</dd>
+            <button
+              type="button"
+              onClick={() => setIsCustomizing(true)}
+              className="shrink-0 text-xs font-medium text-white/50 transition-colors hover:text-white hover:underline hover:underline-offset-2"
+            >
+              Personnaliser mes charges
+            </button>
           </div>
-        </dl>
+        )}
 
         <div className="mt-10 border-t border-white/10 pt-8">
           <div className="flex items-center justify-between gap-4">

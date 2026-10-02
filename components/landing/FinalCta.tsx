@@ -14,7 +14,7 @@ export default function FinalCta() {
   return (
     <section className="mx-auto max-w-3xl px-4 py-28 text-center sm:px-6">
       <motion.h2 {...reveal} className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-        Et si tu savais toujours ce qu&apos;il te restera ?
+        Sache ce qu&apos;il te reste avant de sortir ta carte.
       </motion.h2>
 
       <motion.p
