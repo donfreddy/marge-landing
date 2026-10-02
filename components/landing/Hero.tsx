@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Lock, ShieldCheck, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhoneMockup from "./PhoneMockup";
-import StoreBadges from "./StoreBadges";
 
 const up = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -50,16 +49,16 @@ export default function Hero() {
             </Button>
           </motion.div>
 
-          <motion.p
+          {/* <motion.p
             {...up(0.28)}
             className="mx-auto mt-6 max-w-sm text-sm font-semibold text-white/80 lg:mx-0"
           >
             Pas de synchronisation bancaire. Pas de compte à lier. Tes données restent sur ton
             téléphone.
-          </motion.p>
+          </motion.p> */}
 
           <motion.div
-            {...up(0.34)}
+            {...up(0.28)}
             className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start"
           >
             {badges.map(({ icon: Icon, label }) => (
@@ -71,10 +70,6 @@ export default function Hero() {
                 {label}
               </span>
             ))}
-          </motion.div>
-
-          <motion.div {...up(0.4)} className="mt-8 flex justify-center lg:justify-start">
-            <StoreBadges align="center" />
           </motion.div>
         </div>
 
