@@ -53,9 +53,19 @@ export default function Footer() {
           href="https://lehmora.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="opacity-70 transition-opacity hover:opacity-100"
+          className="flex items-center gap-1 text-white/40 transition-colors hover:text-white"
         >
-          <Image src="/lohmora.svg" alt="Lehmora" width={44} height={11} />
+          <svg width={13} height={13} viewBox="0 0 52 51" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M13.8567 32.9105C8.4477 32.9105 0 33.6873 0 25.8857C0 21.9174 2.88652 18.4753 7.02479 18.4753C20.5234 18.4753 31.4601 29.4119 31.4601 42.9105V43.0207C31.4601 46.905 28.3196 50.0455 24.4353 50.0455C16.7525 50.0455 17.4105 41.8534 17.4105 36.4918C17.4105 34.5083 15.8127 32.9105 13.8567 32.9105Z"
+              fill="currentColor"
+            />
+            <path
+              d="M32.8933 13.8747C32.8933 8.4657 33.67 0.017993 25.8685 0.017993C25.1956 0.017993 18.458 -0.706733 18.458 7.04279C18.458 20.5414 29.3946 31.478 42.8933 31.478C46.7656 31.478 50.0283 28.372 50.0283 24.4533C50.0283 16.7705 41.8361 17.4285 36.4745 17.4285C34.4911 17.4285 32.8933 15.8307 32.8933 13.8747Z"
+              fill="currentColor"
+            />
+          </svg>
+          <span className="font-medium">Lehmora</span>
         </a>
       </div>
     </footer>
