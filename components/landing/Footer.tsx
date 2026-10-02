@@ -1,4 +1,4 @@
-import { Scale } from "lucide-react";
+import Image from "next/image";
 import StoreBadges from "./StoreBadges";
 
 const NAV_LINKS = [
@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2 text-white">
-            <Scale className="h-5 w-5 text-emerald-500" strokeWidth={2.25} />
+            <Image src="/logo.svg" alt="" width={28} height={28} className="rounded-lg" />
             <span className="text-base font-semibold tracking-tight">Marge</span>
           </div>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/45">
