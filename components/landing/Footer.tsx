@@ -46,7 +46,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-14 max-w-6xl border-t border-white/5 pt-6 text-xs text-white/30">
-        &copy; {new Date().getFullYear()} Marge, all rights reserved. A product by{" "}
+        &copy; {new Date().getFullYear()} Marge. Tous droits réservés. Un produit par{" "}
         <a
           href="https://lehmora.com"
           target="_blank"
