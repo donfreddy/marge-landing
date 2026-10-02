@@ -45,17 +45,18 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto mt-14 max-w-6xl border-t border-white/5 pt-6 text-xs text-white/30">
-        &copy; {new Date().getFullYear()} Marge. Tous droits réservés. Un produit par{" "}
+      <div className="mx-auto mt-14 flex max-w-6xl flex-wrap items-center gap-1.5 border-t border-white/5 pt-6 text-xs text-white/30">
+        <span>
+          &copy; {new Date().getFullYear()} Marge. Tous droits réservés. Un produit par
+        </span>
         <a
           href="https://lehmora.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/50 transition-colors hover:text-white"
+          className="opacity-70 transition-opacity hover:opacity-100"
         >
-          Lehmora
+          <Image src="/lehmora.png" alt="Lehmora" width={56} height={14} />
         </a>
-        .
       </div>
     </footer>
   );
