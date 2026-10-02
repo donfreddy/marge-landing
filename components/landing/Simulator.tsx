@@ -11,6 +11,7 @@ import {
   computeRemainingAfterPurchase,
   computeVerdict,
   formatFCFA,
+  type Commitment,
   type Verdict,
 } from "@/lib/simulator";
 
@@ -59,6 +60,31 @@ const VERDICT_CONFIG: Record<
   },
 };
 
+function InlineAmountInput({
+  value,
+  onChange,
+  ariaLabel,
+}: {
+  value: number;
+  onChange: (next: number) => void;
+  ariaLabel: string;
+}) {
+  return (
+    <input
+      type="number"
+      min={0}
+      step={1_000}
+      value={value}
+      aria-label={ariaLabel}
+      onChange={(e) => {
+        const next = Number(e.target.value);
+        onChange(Number.isNaN(next) ? 0 : Math.max(next, 0));
+      }}
+      className="w-28 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-right text-sm font-medium text-white outline-none transition-colors focus:border-white/40"
+    />
+  );
+}
+
 function AnimatedAmount({ value, className }: { value: number; className?: string }) {
   const motionValue = useMotionValue(value);
   const spring = useSpring(motionValue, { stiffness: 140, damping: 22, mass: 0.6 });
@@ -72,29 +98,63 @@ function AnimatedAmount({ value, className }: { value: number; className?: strin
 }
 
 export default function Simulator() {
+  const [balance, setBalance] = useState(DEFAULT_BALANCE);
+  const [commitments, setCommitments] = useState<Commitment[]>(DEFAULT_COMMITMENTS);
   const [purchaseAmount, setPurchaseAmount] = useState(0);
 
-  const realMargin = computeRealMargin(DEFAULT_BALANCE, DEFAULT_COMMITMENTS);
+  const realMargin = computeRealMargin(balance, commitments);
   const remaining = computeRemainingAfterPurchase(realMargin, purchaseAmount);
   const verdict = computeVerdict(remaining, realMargin);
   const { label, message, color, ring, track, thumb, icon: Icon } = VERDICT_CONFIG[verdict];
 
+  const reset = () => {
+    setBalance(DEFAULT_BALANCE);
+    setCommitments(DEFAULT_COMMITMENTS.map((c) => ({ ...c })));
+    setPurchaseAmount(0);
+  };
+
+  const updateCommitmentAmount = (index: number, amount: number) => {
+    setCommitments((prev) => prev.map((c, i) => (i === index ? { ...c, amount } : c)));
+  };
+
   return (
     <section id="simulateur" className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
       <div className="rounded-3xl border border-white/10 bg-white/3 p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-10">
-        <h3 className="text-center text-sm font-semibold uppercase tracking-widest text-white/40">
-          Ta marge réelle, aujourd&apos;hui
-        </h3>
+        <div className="flex items-center justify-between gap-4">
+          <h3 className="text-sm font-semibold uppercase tracking-widest text-white/40">
+            Ta marge réelle, aujourd&apos;hui
+          </h3>
+          <button
+            type="button"
+            onClick={reset}
+            className="shrink-0 text-xs font-medium text-white/40 transition-colors hover:text-white hover:underline hover:underline-offset-2"
+          >
+            Réinitialiser
+          </button>
+        </div>
+
+        <p className="mt-1 text-xs text-white/35">Modifie ton solde et tes charges pour voir ta vraie marge.</p>
 
         <dl className="mt-6 divide-y divide-white/5 text-sm">
           <div className="flex items-center justify-between py-2.5">
             <dt className="text-white/50">Solde actuel</dt>
-            <dd className="font-medium text-white">{formatFCFA(DEFAULT_BALANCE)}</dd>
+            <dd>
+              <InlineAmountInput value={balance} onChange={setBalance} ariaLabel="Solde actuel" />
+            </dd>
           </div>
-          {DEFAULT_COMMITMENTS.map((c) => (
+          {commitments.map((c, i) => (
             <div key={c.label} className="flex items-center justify-between py-2.5">
               <dt className="text-white/50">{c.label}</dt>
-              <dd className="font-medium text-white/70">-{formatFCFA(c.amount)}</dd>
+              <dd className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="text-white/40">
+                  -
+                </span>
+                <InlineAmountInput
+                  value={c.amount}
+                  onChange={(next) => updateCommitmentAmount(i, next)}
+                  ariaLabel={c.label}
+                />
+              </dd>
             </div>
           ))}
           <div className="flex items-center justify-between py-3">
@@ -103,11 +163,7 @@ export default function Simulator() {
           </div>
         </dl>
 
-        <p className="border-t border-white/5 py-3 text-center text-xs italic text-emerald-500/70">
-          Dans l&apos;app, ces charges s&apos;adaptent à ta vraie vie.
-        </p>
-
-        <div className="mt-6 border-t border-white/10 pt-8">
+        <div className="mt-10 border-t border-white/10 pt-8">
           <div className="flex items-center justify-between gap-4">
             <label htmlFor="purchase" className="text-sm font-medium text-white/70">
               Tu veux acheter quelque chose à...
