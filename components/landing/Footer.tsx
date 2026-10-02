@@ -55,7 +55,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="opacity-70 transition-opacity hover:opacity-100"
         >
-          <Image src="/lohmora.svg" alt="Lehmora" width={56} height={14} />
+          <Image src="/lohmora.svg" alt="Lehmora" width={44} height={11} />
         </a>
       </div>
     </footer>
