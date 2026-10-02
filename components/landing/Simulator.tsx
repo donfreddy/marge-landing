@@ -1,9 +1,11 @@
 "use client";
 
-import * as SliderPrimitive from "@radix-ui/react-slider";
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import {
   DEFAULT_BALANCE,
   DEFAULT_COMMITMENTS,
@@ -37,7 +39,7 @@ const VERDICT_CONFIG: Record<
     color: "text-emerald-500",
     ring: "border-emerald-500/30 bg-emerald-500/5",
     track: "bg-emerald-500",
-    thumb: "border-emerald-500",
+    thumb: "border-emerald-500 bg-zinc-950",
     icon: CheckCircle2,
   },
   warning: {
@@ -46,7 +48,7 @@ const VERDICT_CONFIG: Record<
     color: "text-amber-500",
     ring: "border-amber-500/30 bg-amber-500/5",
     track: "bg-amber-500",
-    thumb: "border-amber-500",
+    thumb: "border-amber-500 bg-zinc-950",
     icon: AlertTriangle,
   },
   danger: {
@@ -55,7 +57,7 @@ const VERDICT_CONFIG: Record<
     color: "text-red-500",
     ring: "border-red-500/30 bg-red-500/5",
     track: "bg-red-500",
-    thumb: "border-red-500",
+    thumb: "border-red-500 bg-zinc-950",
     icon: XCircle,
   },
 };
@@ -70,7 +72,7 @@ function InlineAmountInput({
   ariaLabel: string;
 }) {
   return (
-    <input
+    <Input
       type="number"
       min={0}
       step={1_000}
@@ -80,7 +82,7 @@ function InlineAmountInput({
         const next = Number(e.target.value);
         onChange(Number.isNaN(next) ? 0 : Math.max(next, 0));
       }}
-      className="w-28 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-right text-sm font-medium text-white outline-none transition-colors focus:border-white/40"
+      className="h-auto w-28 bg-white/5 px-2 py-1 text-right text-sm font-medium text-white"
     />
   );
 }
@@ -124,13 +126,15 @@ export default function Simulator() {
           <h3 className="text-sm font-semibold uppercase tracking-widest text-white/40">
             Ta marge réelle, aujourd&apos;hui
           </h3>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={reset}
-            className="shrink-0 text-xs font-medium text-white/40 transition-colors hover:text-white hover:underline hover:underline-offset-2"
+            className="h-auto shrink-0 px-0 text-xs font-medium text-white/40 hover:bg-transparent hover:text-white hover:underline hover:underline-offset-2"
           >
             Réinitialiser
-          </button>
+          </Button>
         </div>
 
         <p className="mt-1 text-xs text-white/35">Modifie ton solde et tes charges pour voir ta vraie marge.</p>
@@ -168,7 +172,7 @@ export default function Simulator() {
             <label htmlFor="purchase" className="text-sm font-medium text-white/70">
               Tu veux acheter quelque chose à...
             </label>
-            <input
+            <Input
               id="purchase"
               type="number"
               min={0}
@@ -179,42 +183,39 @@ export default function Simulator() {
                 const next = Number(e.target.value);
                 setPurchaseAmount(Number.isNaN(next) ? 0 : Math.min(Math.max(next, 0), SLIDER_MAX));
               }}
-              className="w-32 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white outline-none transition-colors focus:border-white/40"
+              className="h-auto w-32 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white"
             />
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
             {QUICK_AMOUNTS.map((amount) => (
-              <button
+              <Button
                 key={amount}
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => setPurchaseAmount(amount)}
-                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`h-auto rounded-full px-3 py-1.5 text-xs font-medium ${
                   purchaseAmount === amount
                     ? "border-white/30 bg-white/15 text-white"
                     : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {formatFCFA(amount)}
-              </button>
+              </Button>
             ))}
           </div>
 
-          <SliderPrimitive.Root
-            className="relative mt-6 flex h-5 w-full touch-none select-none items-center"
+          <Slider
+            className="mt-6"
             value={[purchaseAmount]}
             onValueChange={([next]) => setPurchaseAmount(next)}
             max={SLIDER_MAX}
             step={SLIDER_STEP}
-          >
-            <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/10">
-              <SliderPrimitive.Range className={`absolute h-full transition-colors duration-300 ${track}`} />
-            </SliderPrimitive.Track>
-            <SliderPrimitive.Thumb
-              className={`block h-5 w-5 rounded-full border-2 bg-zinc-950 shadow-lg transition-[transform,border-color] duration-300 focus:outline-none focus-visible:scale-125 ${thumb}`}
-              aria-label="Montant de l'achat"
-            />
-          </SliderPrimitive.Root>
+            rangeClassName={`transition-colors duration-300 ${track}`}
+            thumbClassName={`size-5 border-2 shadow-lg transition-[transform,border-color] duration-300 focus-visible:scale-125 ${thumb}`}
+            aria-label="Montant de l'achat"
+          />
         </div>
 
         <motion.div

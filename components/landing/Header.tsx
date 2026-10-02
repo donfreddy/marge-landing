@@ -1,6 +1,7 @@
 "use client";
 
 import { Scale } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
@@ -11,12 +12,9 @@ export default function Header() {
           <span className="text-base font-semibold tracking-tight">Marge</span>
         </a>
 
-        <a
-          href="#simulateur"
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10"
-        >
-          Tester le simulateur
-        </a>
+        <Button asChild variant="outline" className="h-auto rounded-full bg-white/5 px-4 py-2 hover:bg-white/10">
+          <a href="#simulateur">Tester le simulateur</a>
+        </Button>
       </div>
     </header>
   );

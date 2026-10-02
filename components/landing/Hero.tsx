@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Lock, ShieldCheck, WifiOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import PhoneMockup from "./PhoneMockup";
 import StoreBadges from "./StoreBadges";
 
@@ -40,12 +41,13 @@ export default function Hero() {
           </motion.p>
 
           <motion.div {...up(0.2)} className="mt-9 flex justify-center lg:justify-start">
-            <a
-              href="#probleme"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
+            <Button
+              asChild
+              size="lg"
+              className="h-auto rounded-full px-7 py-3.5 text-base shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03]"
             >
-              Voir combien je peux dépenser
-            </a>
+              <a href="#probleme">Voir combien je peux dépenser</a>
+            </Button>
           </motion.div>
 
           <motion.div {...up(0.3)} className="mt-8 flex justify-center lg:justify-start">
