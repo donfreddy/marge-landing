@@ -30,15 +30,29 @@ const reveal = (delay = 0) => ({
 
 export default function Benefits() {
   return (
-    <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6">
-      <div className="grid gap-6 sm:grid-cols-3">
+    <section id="avantages" className="mx-auto max-w-5xl px-4 py-28 sm:px-6">
+      <div className="mx-auto max-w-xl text-center">
+        <motion.p {...reveal()} className="text-sm font-semibold uppercase tracking-widest text-emerald-500">
+          Pourquoi Marge
+        </motion.p>
+        <motion.h2
+          {...reveal(0.05)}
+          className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl"
+        >
+          Conçu pour décider, pas pour suivre.
+        </motion.h2>
+      </div>
+
+      <div className="mt-14 grid gap-6 sm:grid-cols-3">
         {benefits.map(({ icon: Icon, title, description }, i) => (
           <motion.div
             key={title}
-            {...reveal(i * 0.08)}
+            {...reveal(0.1 + i * 0.08)}
             className="rounded-2xl border border-white/10 bg-white/2 p-6"
           >
-            <Icon className="h-6 w-6 text-emerald-500" strokeWidth={2} />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10">
+              <Icon className="h-5 w-5 text-emerald-500" strokeWidth={2} />
+            </div>
             <h3 className="mt-4 text-base font-semibold text-white">{title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-white/55">{description}</p>
           </motion.div>

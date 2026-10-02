@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Lock, ShieldCheck, WifiOff } from "lucide-react";
+import PhoneMockup from "./PhoneMockup";
+import StoreBadges from "./StoreBadges";
 
 const up = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -17,47 +19,57 @@ const badges = [
 
 export default function Hero() {
   return (
-    <section
-      id="top"
-      className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-4 pt-16 text-center"
-    >
-      <motion.h1
-        {...up(0)}
-        className="max-w-3xl text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl"
-      >
-        Tu sais combien tu as.
-        <br />
-        <span className="text-emerald-500">Mais sais-tu combien tu peux VRAIMENT dépenser ?</span>
-      </motion.h1>
+    <section id="top" className="relative overflow-hidden px-4 pb-20 pt-32 sm:px-6 lg:pt-40">
+      <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+        <div className="text-center lg:text-left">
+          <motion.h1
+            {...up(0)}
+            className="text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]"
+          >
+            Tu sais combien tu as.
+            <br />
+            <span className="text-emerald-500">Mais sais-tu combien tu peux VRAIMENT dépenser ?</span>
+          </motion.h1>
 
-      <motion.p
-        {...up(0.1)}
-        className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60"
-      >
-        Marge calcule ce qu&apos;il te restera vraiment avant ton prochain revenu, et te permet de
-        tester un achat avant de le faire.
-      </motion.p>
+          <motion.p
+            {...up(0.1)}
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 lg:mx-0"
+          >
+            Marge calcule ce qu&apos;il te restera vraiment avant ton prochain revenu, et te permet
+            de tester un achat avant de le faire.
+          </motion.p>
 
-      <motion.div {...up(0.2)} className="mt-9">
-        <a
-          href="#simulateur"
-          className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
-        >
-          Voir combien je peux dépenser
-        </a>
-      </motion.div>
+          <motion.div {...up(0.2)} className="mt-9 flex justify-center lg:justify-start">
+            <a
+              href="#simulateur"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
+            >
+              Voir combien je peux dépenser
+            </a>
+          </motion.div>
 
-      <motion.div
-        {...up(0.3)}
-        className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
-      >
-        {badges.map(({ icon: Icon, label }) => (
-          <span key={label} className="flex items-center gap-1.5 text-xs font-medium text-white/40">
-            <Icon className="h-3.5 w-3.5" />
-            {label}
-          </span>
-        ))}
-      </motion.div>
+          <motion.div {...up(0.3)} className="mt-8 flex justify-center lg:justify-start">
+            <StoreBadges align="center" />
+          </motion.div>
+
+          <motion.div
+            {...up(0.4)}
+            className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 lg:justify-start"
+          >
+            {badges.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="flex items-center gap-1.5 text-xs font-medium text-white/40"
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+
+        <PhoneMockup />
+      </div>
     </section>
   );
 }

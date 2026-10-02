@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import StoreBadges from "./StoreBadges";
 
 const reveal = {
   initial: { opacity: 0, y: 20 },
@@ -23,6 +24,14 @@ export default function FinalCta() {
         >
           Calculer ma marge maintenant
         </a>
+      </motion.div>
+
+      <motion.div
+        {...reveal}
+        transition={{ ...reveal.transition, delay: 0.2 }}
+        className="mt-10 flex justify-center"
+      >
+        <StoreBadges />
       </motion.div>
     </section>
   );
