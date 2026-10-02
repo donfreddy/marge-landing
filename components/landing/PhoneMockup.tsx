@@ -18,7 +18,7 @@ export default function PhoneMockup() {
       initial={{ opacity: 0, y: 30, rotate: -3 }}
       animate={{ opacity: 1, y: 0, rotate: -3 }}
       transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 0.61, 0.36, 1] }}
-      className="relative mx-auto w-[250px] sm:w-[280px]"
+      className="relative mx-auto w-62.5 sm:w-70"
     >
       <motion.div
         animate={{ y: [0, -10, 0] }}
