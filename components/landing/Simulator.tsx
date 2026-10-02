@@ -74,17 +74,17 @@ function InlineAmountInput({
 }) {
   return (
     <Input
-      type="number"
-      min={0}
-      step={1_000}
+      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
       value={value}
       aria-label={ariaLabel}
       onChange={(e) => {
-        const next = Number(e.target.value);
+        const next = Number.parseInt(e.target.value.replace(/\D/g, ""), 10);
         onChange(Number.isNaN(next) ? 0 : Math.max(next, 0));
       }}
       onFocus={(e) => e.target.select()}
-      className="h-auto w-28 bg-white/5 px-2 py-1 text-right text-sm font-medium text-white"
+      className="h-10 w-28 bg-white/5 px-2 py-1 text-right text-base font-medium text-white md:text-sm"
     />
   );
 }
@@ -200,24 +200,28 @@ export default function Simulator() {
         )}
 
         <div className="mt-10 border-t border-white/10 pt-8">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <label htmlFor="purchase" className="text-sm font-medium text-white/70">
               Tu veux acheter quelque chose à...
             </label>
-            <Input
-              id="purchase"
-              type="number"
-              min={0}
-              max={SLIDER_MAX}
-              step={SLIDER_STEP}
-              value={purchaseAmount}
-              onChange={(e) => {
-                const next = Number(e.target.value);
-                setPurchaseAmount(Number.isNaN(next) ? 0 : Math.min(Math.max(next, 0), SLIDER_MAX));
-              }}
-              onFocus={(e) => e.target.select()}
-              className="h-auto w-32 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white"
-            />
+            <div className="relative w-full sm:w-44">
+              <Input
+                id="purchase"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={purchaseAmount}
+                onChange={(e) => {
+                  const next = Number.parseInt(e.target.value.replace(/\D/g, ""), 10);
+                  setPurchaseAmount(Number.isNaN(next) ? 0 : Math.min(Math.max(next, 0), SLIDER_MAX));
+                }}
+                onFocus={(e) => e.target.select()}
+                className="h-14 w-full bg-white/10 px-4 pr-16 text-right text-2xl font-black text-white focus-visible:ring-emerald-500/50"
+              />
+              <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-white/40">
+                FCFA
+              </span>
+            </div>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">

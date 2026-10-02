@@ -17,8 +17,8 @@ export default function Footer() {
             <span className="text-base font-semibold tracking-tight">Marge</span>
           </div>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/45">
-            Le decision engine financier 100% local-first. Sais ce qu&apos;il te reste avant de
-            sortir ta carte.
+            L&apos;application qui te dit si tu peux vraiment faire cet achat, sans jamais toucher
+            à tes données bancaires.
           </p>
         </div>
 

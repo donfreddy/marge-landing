@@ -46,7 +46,7 @@ export default function Hero() {
               size="lg"
               className="h-auto rounded-full px-7 py-3.5 text-base shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03]"
             >
-              <a href="#probleme">Voir combien je peux dépenser</a>
+              <a href="#simulateur">Voir combien je peux dépenser</a>
             </Button>
           </motion.div>
 
