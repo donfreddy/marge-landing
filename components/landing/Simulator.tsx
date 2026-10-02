@@ -11,6 +11,7 @@ import {
   DEFAULT_COMMITMENTS,
   computeRealMargin,
   computeRemainingAfterPurchase,
+  computeSafetyBuffer,
   computeVerdict,
   formatFCFA,
   type Commitment,
@@ -109,6 +110,7 @@ export default function Simulator() {
 
   const realMargin = computeRealMargin(balance, commitments);
   const remaining = computeRemainingAfterPurchase(realMargin, purchaseAmount);
+  const safetyBuffer = computeSafetyBuffer(realMargin);
   const verdict = computeVerdict(remaining, realMargin);
   const { label, message, color, ring, track, thumb, icon: Icon } = VERDICT_CONFIG[verdict];
 
@@ -173,12 +175,21 @@ export default function Simulator() {
                 <dt className="font-semibold text-white">Marge réelle</dt>
                 <dd className="text-xl font-bold text-emerald-500">{formatFCFA(realMargin)}</dd>
               </div>
+              <div className="flex items-center justify-between py-2.5">
+                <dt className="text-white/50">Réserve de sécurité (10%)</dt>
+                <dd className="font-medium text-white/70">-{formatFCFA(safetyBuffer)}</dd>
+              </div>
             </dl>
+
+            <p className="mt-1 text-xs text-white/35">
+              Marge garde toujours cette réserve de côté : le verdict ne la compte jamais comme
+              dépensable.
+            </p>
 
             <button
               type="button"
               onClick={() => setIsCustomizing(false)}
-              className="mt-1 text-xs font-medium text-white/40 transition-colors hover:text-white hover:underline hover:underline-offset-2"
+              className="mt-3 text-xs font-medium text-white/40 transition-colors hover:text-white hover:underline hover:underline-offset-2"
             >
               Replier
             </button>
@@ -188,6 +199,9 @@ export default function Simulator() {
             <div>
               <p className="text-xs text-white/40">Marge réelle (solde − charges du mois)</p>
               <p className="mt-1 text-2xl font-bold text-emerald-500">{formatFCFA(realMargin)}</p>
+              <p className="mt-1.5 text-xs text-white/35">
+                Dont {formatFCFA(safetyBuffer)} de réserve, jamais comptée comme dépensable.
+              </p>
             </div>
             <button
               type="button"

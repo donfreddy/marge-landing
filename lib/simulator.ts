@@ -26,16 +26,50 @@ export function computeRemainingAfterPurchase(realMargin: number, purchaseAmount
 }
 
 /**
- * Seuils exprimés en ratio du remaining par rapport à la marge réelle de départ,
- * pour rester cohérent quel que soit le revenu de l'utilisateur.
+ * Taux de réserve de sécurité, en points de base (1000 = 10%).
+ * Reprend UserProfile.defaultBufferRateBps du moteur réel (marge-mobile),
+ * pour que le verdict de la démo ne puisse pas contredire celui de l'app
+ * sur les mêmes chiffres.
+ */
+export const SAFETY_BUFFER_RATE_BPS = 1000;
+
+/**
+ * Part maximale de la marge (après réserve) qu'un achat peut représenter
+ * sans déclencher un avertissement. Reprend safeShareBps du policy profile
+ * "normal" (ThresholdSafetyPolicy.normal) du moteur réel.
+ */
+const SAFE_SHARE_BPS = 5000;
+
+/**
+ * La réserve que Marge garde toujours de côté, jamais dépensable.
+ * Dans l'app, elle est gelée au moment de l'onboarding à partir du creux
+ * projeté ; ici, faute de projection temporelle, on l'applique à la marge
+ * statique (solde − charges).
+ */
+export function computeSafetyBuffer(realMargin: number): number {
+  return realMargin > 0 ? Math.round(realMargin * (SAFETY_BUFFER_RATE_BPS / 10_000)) : 0;
+}
+
+/**
+ * Reproduit ThresholdSafetyPolicy.normal du moteur réel : rouge si la marge
+ * (avant ou après l'achat, réserve déduite) devient négative, orange si
+ * l'achat dépasse la part sûre de la marge, vert sinon.
+ *
+ * Simplification assumée : le moteur réel teste aussi l'apparition d'un
+ * "cliff" sur la fenêtre de projection (30-60 jours) ; cette démo n'a pas
+ * de dimension temporelle et ne peut donc pas reproduire ce test.
  */
 export function computeVerdict(remaining: number, realMargin: number): Verdict {
-  if (realMargin <= 0) return "danger";
+  const buffer = computeSafetyBuffer(realMargin);
+  const marginBefore = realMargin - buffer;
+  const marginAfter = remaining - buffer;
 
-  const ratio = remaining / realMargin;
+  if (marginBefore < 0) return "danger";
+  if (marginAfter < 0) return "danger";
 
-  if (remaining < 0 || ratio < 0.15) return "danger";
-  if (ratio < 0.5) return "warning";
+  const purchase = realMargin - remaining;
+  if (marginBefore > 0 && purchase / marginBefore > SAFE_SHARE_BPS / 10_000) return "warning";
+
   return "safe";
 }
 

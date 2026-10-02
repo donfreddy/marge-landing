@@ -3,6 +3,7 @@ import {
   type Commitment,
   computeRealMargin,
   computeRemainingAfterPurchase,
+  computeSafetyBuffer,
   computeVerdict,
   formatFCFA,
   sumCommitments,
@@ -48,39 +49,53 @@ describe("computeRemainingAfterPurchase", () => {
   });
 });
 
+describe("computeSafetyBuffer", () => {
+  it("is 10% of a positive real margin", () => {
+    expect(computeSafetyBuffer(10_000)).toBe(1_000);
+    expect(computeSafetyBuffer(95_000)).toBe(9_500);
+  });
+
+  it("is zero for a zero or negative real margin", () => {
+    expect(computeSafetyBuffer(0)).toBe(0);
+    expect(computeSafetyBuffer(-20_000)).toBe(0);
+  });
+});
+
 describe("computeVerdict", () => {
-  it("is safe when at least half the margin remains", () => {
-    expect(computeVerdict(47_500, 95_000)).toBe("safe");
+  // realMargin = 95 000 => buffer = 9 500 => marginBefore (buffer-adjusted) = 85 500.
+  const REAL_MARGIN = 95_000;
+  const MARGIN_BEFORE = 85_500;
+
+  it("is safe when the purchase stays at or under 50% of the buffer-adjusted margin", () => {
+    expect(computeVerdict(REAL_MARGIN - 10_000, REAL_MARGIN)).toBe("safe");
+    expect(computeVerdict(REAL_MARGIN - MARGIN_BEFORE * 0.5, REAL_MARGIN)).toBe("safe");
   });
 
-  it("is safe exactly at the 50% boundary", () => {
-    expect(computeVerdict(47_500, 95_000)).toBe("safe");
-    expect(computeVerdict(95_000 * 0.5, 95_000)).toBe("safe");
+  it("is warning just above the 50% safe-share boundary", () => {
+    expect(computeVerdict(REAL_MARGIN - (MARGIN_BEFORE * 0.5 + 1), REAL_MARGIN)).toBe("warning");
   });
 
-  it("is warning just below the 50% boundary", () => {
-    expect(computeVerdict(95_000 * 0.5 - 1, 95_000)).toBe("warning");
+  it("matches the simulator's default scenario: 50 000 spent out of a 95 000 margin", () => {
+    expect(computeVerdict(45_000, 95_000)).toBe("warning");
   });
 
-  it("matches the brief's example: 70 000 spent out of a 95 000 margin", () => {
-    expect(computeVerdict(25_000, 95_000)).toBe("warning");
+  it("is danger once the purchase eats into the safety buffer itself", () => {
+    // remaining (5 000) - buffer (9 500) < 0, even though marginBefore was still positive.
+    expect(computeVerdict(5_000, REAL_MARGIN)).toBe("danger");
   });
 
-  it("is warning exactly at the 15% boundary", () => {
-    expect(computeVerdict(95_000 * 0.15, 95_000)).toBe("warning");
+  it("is danger when the remaining amount is deeply negative", () => {
+    expect(computeVerdict(-55_000, REAL_MARGIN)).toBe("danger");
   });
 
-  it("is danger just below the 15% boundary", () => {
-    expect(computeVerdict(95_000 * 0.15 - 1, 95_000)).toBe("danger");
-  });
-
-  it("is danger when the remaining amount is negative", () => {
-    expect(computeVerdict(-1, 95_000)).toBe("danger");
-  });
-
-  it("is danger when the real margin itself is zero or negative, regardless of remaining", () => {
-    expect(computeVerdict(0, 0)).toBe("danger");
+  it("is danger when the real margin itself is already negative, regardless of remaining", () => {
     expect(computeVerdict(10_000, -20_000)).toBe("danger");
+  });
+
+  it("is safe when both the real margin and the remaining amount are exactly zero", () => {
+    // No purchase tested (0 out of 0): matches the real engine's policy, which
+    // only turns red once marginBefore or marginAfter actually goes negative.
+    expect(computeVerdict(0, 0)).toBe("safe");
   });
 });
 
