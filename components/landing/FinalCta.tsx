@@ -19,7 +19,7 @@ export default function FinalCta() {
       <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.1 }} className="mt-8">
         <a
           href="#simulateur"
-          className="inline-flex items-center justify-center rounded-full bg-indigo-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.03] hover:bg-indigo-400"
+          className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
         >
           Calculer ma marge maintenant
         </a>

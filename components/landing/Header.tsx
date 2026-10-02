@@ -7,7 +7,7 @@ export default function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-zinc-950/70 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a href="#top" className="flex items-center gap-2 text-white">
-          <Scale className="h-5 w-5 text-indigo-400" strokeWidth={2.25} />
+          <Scale className="h-5 w-5 text-emerald-500" strokeWidth={2.25} />
           <span className="text-base font-semibold tracking-tight">Marge</span>
         </a>
 

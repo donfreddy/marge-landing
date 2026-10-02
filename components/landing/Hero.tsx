@@ -27,7 +27,7 @@ export default function Hero() {
       >
         Tu sais combien tu as.
         <br />
-        <span className="text-indigo-400">Mais sais-tu combien tu peux VRAIMENT dépenser ?</span>
+        <span className="text-emerald-500">Mais sais-tu combien tu peux VRAIMENT dépenser ?</span>
       </motion.h1>
 
       <motion.p
@@ -41,7 +41,7 @@ export default function Hero() {
       <motion.div {...up(0.2)} className="mt-9">
         <a
           href="#simulateur"
-          className="inline-flex items-center justify-center rounded-full bg-indigo-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.03] hover:bg-indigo-400"
+          className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
         >
           Voir combien je peux dépenser
         </a>

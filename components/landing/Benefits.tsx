@@ -38,7 +38,7 @@ export default function Benefits() {
             {...reveal(i * 0.08)}
             className="rounded-2xl border border-white/10 bg-white/2 p-6"
           >
-            <Icon className="h-6 w-6 text-indigo-400" strokeWidth={2} />
+            <Icon className="h-6 w-6 text-emerald-500" strokeWidth={2} />
             <h3 className="mt-4 text-base font-semibold text-white">{title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-white/55">{description}</p>
           </motion.div>

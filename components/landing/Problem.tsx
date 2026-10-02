@@ -13,7 +13,7 @@ const reveal = {
 export default function Problem() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-28 text-center sm:px-6">
-      <motion.p {...reveal} className="text-sm font-semibold uppercase tracking-widest text-indigo-400">
+      <motion.p {...reveal} className="text-sm font-semibold uppercase tracking-widest text-emerald-500">
         Le risque invisible
       </motion.p>
 

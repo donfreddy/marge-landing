@@ -23,7 +23,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.25) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(16, 185, 129, 0.22) 1px, transparent 1px);
   background-size: 32px 32px;
   mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 100%);
 }

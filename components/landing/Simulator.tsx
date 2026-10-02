@@ -19,27 +19,41 @@ const SLIDER_STEP = 1_000;
 
 const VERDICT_CONFIG: Record<
   Verdict,
-  { label: string; message: string; color: string; ring: string; icon: typeof CheckCircle2 }
+  {
+    label: string;
+    message: string;
+    color: string;
+    ring: string;
+    track: string;
+    thumb: string;
+    icon: typeof CheckCircle2;
+  }
 > = {
   safe: {
     label: "Marge confortable",
     message: "Tu peux y aller, il te reste assez pour finir le mois sereinement.",
-    color: "text-emerald-400",
+    color: "text-emerald-500",
     ring: "border-emerald-500/30 bg-emerald-500/5",
+    track: "bg-emerald-500",
+    thumb: "border-emerald-500",
     icon: CheckCircle2,
   },
   warning: {
     label: "Marge serrée",
     message: "Ta marge devient trop faible pour finir le mois sereinement.",
-    color: "text-amber-400",
+    color: "text-amber-500",
     ring: "border-amber-500/30 bg-amber-500/5",
+    track: "bg-amber-500",
+    thumb: "border-amber-500",
     icon: AlertTriangle,
   },
   danger: {
     label: "Marge en danger",
     message: "Cet achat met ton mois en danger. Évite-le si tu peux.",
-    color: "text-red-400",
+    color: "text-red-500",
     ring: "border-red-500/30 bg-red-500/5",
+    track: "bg-red-500",
+    thumb: "border-red-500",
     icon: XCircle,
   },
 };
@@ -62,7 +76,7 @@ export default function Simulator() {
   const realMargin = computeRealMargin(DEFAULT_BALANCE, DEFAULT_COMMITMENTS);
   const remaining = computeRemainingAfterPurchase(realMargin, purchaseAmount);
   const verdict = computeVerdict(remaining, realMargin);
-  const { label, message, color, ring, icon: Icon } = VERDICT_CONFIG[verdict];
+  const { label, message, color, ring, track, thumb, icon: Icon } = VERDICT_CONFIG[verdict];
 
   return (
     <section id="simulateur" className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
@@ -84,7 +98,7 @@ export default function Simulator() {
           ))}
           <div className="flex items-center justify-between py-3">
             <dt className="font-semibold text-white">Marge réelle</dt>
-            <dd className="text-xl font-bold text-indigo-400">{formatFCFA(realMargin)}</dd>
+            <dd className="text-xl font-bold text-emerald-500">{formatFCFA(realMargin)}</dd>
           </div>
         </dl>
 
@@ -104,7 +118,7 @@ export default function Simulator() {
                 const next = Number(e.target.value);
                 setPurchaseAmount(Number.isNaN(next) ? 0 : Math.min(Math.max(next, 0), SLIDER_MAX));
               }}
-              className="w-32 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white outline-none focus:border-indigo-400"
+              className="w-32 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white outline-none transition-colors focus:border-white/40"
             />
           </div>
 
@@ -116,10 +130,10 @@ export default function Simulator() {
             step={SLIDER_STEP}
           >
             <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-white/10">
-              <SliderPrimitive.Range className="absolute h-full bg-indigo-500" />
+              <SliderPrimitive.Range className={`absolute h-full transition-colors duration-300 ${track}`} />
             </SliderPrimitive.Track>
             <SliderPrimitive.Thumb
-              className="block h-5 w-5 rounded-full border-2 border-indigo-400 bg-zinc-950 shadow-lg transition-transform focus:outline-none focus-visible:scale-125"
+              className={`block h-5 w-5 rounded-full border-2 bg-zinc-950 shadow-lg transition-[transform,border-color] duration-300 focus:outline-none focus-visible:scale-125 ${thumb}`}
               aria-label="Montant de l'achat"
             />
           </SliderPrimitive.Root>
