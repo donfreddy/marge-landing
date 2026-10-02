@@ -13,7 +13,7 @@ const reveal = {
 
 export default function Problem() {
   return (
-    <section className="relative bg-white/1.5 px-4 py-28 sm:px-6">
+    <section id="probleme" className="relative bg-white/1.5 px-4 py-28 sm:px-6">
       <div className="mx-auto max-w-4xl text-center">
         <motion.p {...reveal} className="text-sm font-semibold uppercase tracking-widest text-emerald-500">
           Le risque invisible
@@ -39,29 +39,36 @@ export default function Problem() {
         <motion.div
           {...reveal}
           transition={{ ...reveal.transition, delay: 0.2 }}
-          className="mt-14 grid items-center gap-4 sm:grid-cols-[1fr_auto_1fr]"
+          className="mt-14 flex items-stretch gap-3 rounded-2xl border border-white/10 bg-white/3 p-4 sm:gap-6 sm:p-8"
         >
-          <div className="rounded-2xl border border-white/10 bg-white/3 p-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-white/40">
-              Ce que ton solde affiche
+          <div className="flex-1 text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40 sm:text-xs">
+              Ton solde affiche
             </p>
-            <p className="mt-3 text-4xl font-black text-white">{formatFCFA(180_000)}</p>
-            <p className="mt-2 text-sm text-white/50">Ce que tu vois en ouvrant ton appli bancaire.</p>
+            <p className="mt-2 text-xl font-black text-white sm:text-4xl">{formatFCFA(180_000)}</p>
           </div>
 
           <ArrowRight
-            className="mx-auto h-6 w-6 shrink-0 rotate-90 text-white/20 sm:rotate-0"
+            className="h-5 w-5 shrink-0 self-center text-white/20 sm:h-6 sm:w-6"
             aria-hidden="true"
           />
 
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500/70">
-              Ce que Marge calcule
+          <div className="flex-1 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-center sm:border-none sm:bg-transparent sm:p-0">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-500/70 sm:text-xs">
+              Marge calcule
             </p>
-            <p className="mt-3 text-4xl font-black text-emerald-500">{formatFCFA(95_000)}</p>
-            <p className="mt-2 text-sm text-white/50">Ce qu&apos;il te reste une fois tes engagements couverts.</p>
+            <p className="mt-2 text-xl font-black text-emerald-500 sm:text-4xl">{formatFCFA(95_000)}</p>
           </div>
         </motion.div>
+
+        <motion.p
+          {...reveal}
+          transition={{ ...reveal.transition, delay: 0.25 }}
+          className="mx-auto mt-4 max-w-md text-xs text-white/40"
+        >
+          Ce que tu vois dans ton appli bancaire, vs. ce qu&apos;il te reste réellement une fois tes
+          engagements couverts.
+        </motion.p>
       </div>
     </section>
   );

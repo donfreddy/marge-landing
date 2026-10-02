@@ -17,19 +17,18 @@ export default function FinalCta() {
         Et si tu savais toujours ce qu&apos;il te restera ?
       </motion.h2>
 
-      <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.1 }} className="mt-8">
-        <a
-          href="#simulateur"
-          className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
-        >
-          Calculer ma marge maintenant
-        </a>
-      </motion.div>
+      <motion.p
+        {...reveal}
+        transition={{ ...reveal.transition, delay: 0.08 }}
+        className="mx-auto mt-4 max-w-md text-white/55"
+      >
+        Télécharge Marge et sache, en 3 secondes, ce que tu peux vraiment dépenser.
+      </motion.p>
 
       <motion.div
         {...reveal}
-        transition={{ ...reveal.transition, delay: 0.2 }}
-        className="mt-10 flex justify-center"
+        transition={{ ...reveal.transition, delay: 0.16 }}
+        className="mt-9 flex justify-center"
       >
         <StoreBadges />
       </motion.div>

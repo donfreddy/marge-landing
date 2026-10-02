@@ -16,6 +16,7 @@ import {
 
 const SLIDER_MAX = 150_000;
 const SLIDER_STEP = 1_000;
+const QUICK_AMOUNTS = [10_000, 25_000, 50_000, 100_000];
 
 const VERDICT_CONFIG: Record<
   Verdict,
@@ -102,7 +103,11 @@ export default function Simulator() {
           </div>
         </dl>
 
-        <div className="mt-10 border-t border-white/10 pt-8">
+        <p className="border-t border-white/5 py-3 text-center text-xs italic text-emerald-500/70">
+          Dans l&apos;app, ces charges s&apos;adaptent à ta vraie vie.
+        </p>
+
+        <div className="mt-6 border-t border-white/10 pt-8">
           <div className="flex items-center justify-between gap-4">
             <label htmlFor="purchase" className="text-sm font-medium text-white/70">
               Tu veux acheter quelque chose à...
@@ -120,6 +125,23 @@ export default function Simulator() {
               }}
               className="w-32 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-right text-sm font-semibold text-white outline-none transition-colors focus:border-white/40"
             />
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {QUICK_AMOUNTS.map((amount) => (
+              <button
+                key={amount}
+                type="button"
+                onClick={() => setPurchaseAmount(amount)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  purchaseAmount === amount
+                    ? "border-white/30 bg-white/15 text-white"
+                    : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {formatFCFA(amount)}
+              </button>
+            ))}
           </div>
 
           <SliderPrimitive.Root

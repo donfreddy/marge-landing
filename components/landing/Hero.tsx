@@ -41,7 +41,7 @@ export default function Hero() {
 
           <motion.div {...up(0.2)} className="mt-9 flex justify-center lg:justify-start">
             <a
-              href="#simulateur"
+              href="#probleme"
               className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-base font-semibold text-black shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03] hover:bg-emerald-400"
             >
               Voir combien je peux dépenser
