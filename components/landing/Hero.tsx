@@ -43,20 +43,12 @@ export default function Hero() {
             <Button
               asChild
               size="lg"
-              className="h-auto rounded-full px-7 py-3.5 text-base shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03]"
+              className="h-auto rounded-full px-5 py-2.5 text-base shadow-lg shadow-emerald-500/25 transition-transform hover:scale-[1.03]"
             >
               <a href="#simulateur">Voir combien je peux dépenser</a>
             </Button>
           </motion.div>
-
-          {/* <motion.p
-            {...up(0.28)}
-            className="mx-auto mt-6 max-w-sm text-sm font-semibold text-white/80 lg:mx-0"
-          >
-            Pas de synchronisation bancaire. Pas de compte à lier. Tes données restent sur ton
-            téléphone.
-          </motion.p> */}
-
+          
           <motion.div
             {...up(0.28)}
             className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start"
